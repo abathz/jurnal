@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "lib": [
+      "es2015"
+    ],
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "api/types": [
+        "src/api/types"
+      ],
+      "actions/*": [
+        "src/redux/actions/*"
+      ],
+      "reducers": [
+        "src/redux"
+      ],
+      "containers/*": [
+        "src/containers/*"
+      ],
+      "components": [
+        "src/components"
+      ]
+    },
+    "esModuleInterop": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "strict": true,
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}
