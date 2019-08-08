@@ -1,8 +1,8 @@
+require('dotenv').config();
 const path = require('path')
 const webpack = require('webpack')
 const withCss = require('@zeit/next-css')
 const withSass = require('@zeit/next-sass')
-const withOffline = require('next-offline')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 
@@ -15,7 +15,8 @@ module.exports = withCss(withSass({
             reducers: path.resolve(__dirname, './src/redux'),
             routes: path.resolve(__dirname, './routes'),
             api: path.resolve(__dirname, './src/api'),
-            actions: path.resolve(__dirname, './src/redux/actions')
+            actions: path.resolve(__dirname, './src/redux/actions'),
+            lib: path.resolve(__dirname, './src/lib')
         }
 
         config.plugins.push(

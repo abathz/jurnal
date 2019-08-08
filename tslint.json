@@ -23,6 +23,7 @@
             true,
             "never-prefix"
         ],
+        "no-console": false,
         "no-shadowed-variable": false,
         "import-spacing": true,
         "space-within-parens": true,
