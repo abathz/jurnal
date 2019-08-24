@@ -35,17 +35,21 @@ const putUser = async (req: NowRequest, res: NowResponse) => {
     const id: any = req.query.id;
     const body = req.body;
 
-    const data = {
+    const updatedData = {
         ...body,
         updated_at: firebase.firestore.FieldValue.serverTimestamp()
     };
-    await firestorePut('users', id, data);
+    await firestorePut('users', id, updatedData);
+    const users = await firestoreGet('users', id);
+
+    const data = users.data();
+    delete data.password;
 
     const bodyResponse = {
         code: 204,
         ok: true,
         message: '',
-        data: {}
+        data
     };
     res.status(200).json(bodyResponse);
 };
