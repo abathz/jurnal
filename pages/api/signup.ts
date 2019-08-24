@@ -6,8 +6,7 @@ import firebase from 'firebase';
 export default async (req: NowRequest, res: NowResponse) => {
     const body = req.body;
     const data = {
-        name: body.name,
-        email: body.email,
+        ...body,
         password: Base64.encode(body.password),
         created_at: firebase.firestore.FieldValue.serverTimestamp(),
         updated_at: firebase.firestore.FieldValue.serverTimestamp()

@@ -7,7 +7,7 @@ import { createToken } from 'lib/jwt';
 export default async (req: NowRequest, res: NowResponse) => {
     const body = req.body;
     const data = {
-        email: body.email,
+        ...body,
         password: Base64.encode(body.password)
     };
 

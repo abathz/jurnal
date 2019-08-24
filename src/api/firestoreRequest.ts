@@ -45,7 +45,7 @@ export const firestorePut = async (collection: string, doc: string, data: any) =
             firebase
                 .collection(collection)
                 .doc(doc)
-                .set(data)
+                .update(data)
         )
     );
 };
