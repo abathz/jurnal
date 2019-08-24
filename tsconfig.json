@@ -8,8 +8,8 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-        "api/types": [
-            "src/api/types"
+        "api/*": [
+            "src/api/*"
         ],
         "actions/*": [
             "src/redux/actions/*"
@@ -35,7 +35,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "strict": true
+    "strict": true,
+    "suppressImplicitAnyIndexErrors": false,
     },
     "exclude": [
         "node_modules"
@@ -43,6 +44,6 @@
     "include": [
         "next-env.d.ts",
         "**/*.ts",
-        "**/*.tsx"
+        "**/*.tsx", "src/api/middleware.js", "src/api/utils.ts"
     ]
 }

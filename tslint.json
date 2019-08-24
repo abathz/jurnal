@@ -14,7 +14,8 @@
         ],
         "quotemark": [
             true,
-            "single"
+            "single",
+            "avoid-escape"
         ],
         "trailing-comma": true,
         "object-literal-sort-keys": false,
@@ -23,6 +24,7 @@
             true,
             "never-prefix"
         ],
+        "curly": false,
         "no-console": false,
         "no-shadowed-variable": false,
         "import-spacing": true,

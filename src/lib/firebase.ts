@@ -1,7 +1,5 @@
 import firebase from 'firebase';
 
-let database: any = null;
-
 if (!firebase.apps.length) {
     firebase.initializeApp({
         apiKey: process.env.API_KEY,
@@ -9,16 +7,11 @@ if (!firebase.apps.length) {
         projectId: process.env.PROJECT_ID
     });
 }
+const email: string | any = process.env.AUTH_EMAIL;
+const pass: string | any = process.env.AUTH_PASS;
 
-try {
-    const email: string | any = process.env.AUTH_EMAIL;
-    const pass: string | any = process.env.AUTH_PASS;
+firebase.auth().signInWithEmailAndPassword(email, pass);
 
-    firebase.auth().signInWithEmailAndPassword(email, pass);
-
-    database = firebase.firestore();
-} catch (err) {
-    console.log('err: ', err);
-}
+const database = firebase.firestore();
 
 export default database;
