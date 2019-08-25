@@ -1,22 +1,34 @@
 import { NowRequest, NowResponse } from '@now/node';
-import { firestoreGet } from 'api/firestoreRequest';
+import firestoreRequest, { firestoreUsers } from 'api/firestoreRequest';
 
 export default async (req: NowRequest, res: NowResponse) => {
-    const users = await firestoreGet('users');
+    const users = await firestoreRequest(firestoreUsers.orderBy('created_at', 'desc').get());
 
-    const data = users.docs.map((res: any) => {
-        const userId = res.id;
-        const user = res.data();
+    let bodyResponse;
 
-        delete user.password;
-        return { id: userId, ...user };
-    });
+    if (users.docs.length > 0) {
+        const data = users.docs.map((res: any) => {
+            const userId = res.id;
+            const user = res.data();
 
-    const bodyResponse = {
-        code: 200,
-        ok: true,
-        message: '',
-        data
-    };
-    res.status(200).json(bodyResponse);
+            delete user.password;
+            return { id: userId, ...user };
+        });
+
+        bodyResponse = {
+            code: 200,
+            ok: true,
+            message: '',
+            data
+        };
+    } else {
+        bodyResponse = {
+            code: 200,
+            ok: true,
+            message: '',
+            data: {}
+        };
+    }
+
+    res.status(bodyResponse.code).json(bodyResponse);
 };

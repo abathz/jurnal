@@ -1,10 +1,10 @@
 import { NowRequest, NowResponse } from '@now/node';
 import firebase from 'firebase';
-import firestoreRequest, { firestoreUsers } from 'api/firestoreRequest';
+import firestoreRequest, { firestoreRegions } from 'api/firestoreRequest';
 
-const getUser = async (req: NowRequest, res: NowResponse) => {
+const getRegion = async (req: NowRequest, res: NowResponse) => {
     const id: any = req.query.id;
-    const users = await firestoreRequest(firestoreUsers.doc(id).get());
+    const users = await firestoreRequest(firestoreRegions.doc(id).get());
 
     let bodyResponse;
 
@@ -30,9 +30,9 @@ const getUser = async (req: NowRequest, res: NowResponse) => {
     res.status(bodyResponse.code).json(bodyResponse);
 };
 
-const deleteUser = async (req: NowRequest, res: NowResponse) => {
+const deleteRegion = async (req: NowRequest, res: NowResponse) => {
     const id: any = req.query.id;
-    await firestoreRequest(firestoreUsers.doc(id).delete());
+    await firestoreRequest(firestoreRegions.doc(id).delete());
 
     const bodyResponse = {
         code: 204,
@@ -43,7 +43,7 @@ const deleteUser = async (req: NowRequest, res: NowResponse) => {
     res.status(bodyResponse.code).json(bodyResponse);
 };
 
-const putUser = async (req: NowRequest, res: NowResponse) => {
+const putRegion = async (req: NowRequest, res: NowResponse) => {
     const id: any = req.query.id;
     const body = req.body;
 
@@ -51,11 +51,10 @@ const putUser = async (req: NowRequest, res: NowResponse) => {
         ...body,
         updated_at: firebase.firestore.FieldValue.serverTimestamp()
     };
-    await firestoreRequest(firestoreUsers.doc(id).update(updatedData));
-    const users = await firestoreRequest(firestoreUsers.doc(id).get());
+    await firestoreRequest(firestoreRegions.doc(id).update(updatedData));
+    const regions = await firestoreRequest(firestoreRegions.doc(id).get());
 
-    const data = users.data();
-    delete data.password;
+    const data = regions.data();
 
     const bodyResponse = {
         code: 204,
@@ -69,13 +68,13 @@ const putUser = async (req: NowRequest, res: NowResponse) => {
 export default (req: NowRequest, res: NowResponse) => {
     switch (req.method) {
         case 'GET':
-            getUser(req, res);
+            getRegion(req, res);
             break;
         case 'DELETE':
-            deleteUser(req, res);
+            deleteRegion(req, res);
             break;
         case 'PUT':
-            putUser(req, res);
+            putRegion(req, res);
             break;
         default:
             res.status(405).json({ message: 'Method Not Allowed' });

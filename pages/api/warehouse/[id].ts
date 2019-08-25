@@ -1,10 +1,10 @@
 import { NowRequest, NowResponse } from '@now/node';
 import firebase from 'firebase';
-import firestoreRequest, { firestoreUsers } from 'api/firestoreRequest';
+import firestoreRequest, { firestoreWarehouses } from 'api/firestoreRequest';
 
-const getUser = async (req: NowRequest, res: NowResponse) => {
+const getWarehouse = async (req: NowRequest, res: NowResponse) => {
     const id: any = req.query.id;
-    const users = await firestoreRequest(firestoreUsers.doc(id).get());
+    const users = await firestoreRequest(firestoreWarehouses.doc(id));
 
     let bodyResponse;
 
@@ -30,9 +30,9 @@ const getUser = async (req: NowRequest, res: NowResponse) => {
     res.status(bodyResponse.code).json(bodyResponse);
 };
 
-const deleteUser = async (req: NowRequest, res: NowResponse) => {
+const deleteWarehouse = async (req: NowRequest, res: NowResponse) => {
     const id: any = req.query.id;
-    await firestoreRequest(firestoreUsers.doc(id).delete());
+    await firestoreRequest(firestoreWarehouses.doc(id).delete());
 
     const bodyResponse = {
         code: 204,
@@ -43,7 +43,7 @@ const deleteUser = async (req: NowRequest, res: NowResponse) => {
     res.status(bodyResponse.code).json(bodyResponse);
 };
 
-const putUser = async (req: NowRequest, res: NowResponse) => {
+const putWarehouse = async (req: NowRequest, res: NowResponse) => {
     const id: any = req.query.id;
     const body = req.body;
 
@@ -51,11 +51,10 @@ const putUser = async (req: NowRequest, res: NowResponse) => {
         ...body,
         updated_at: firebase.firestore.FieldValue.serverTimestamp()
     };
-    await firestoreRequest(firestoreUsers.doc(id).update(updatedData));
-    const users = await firestoreRequest(firestoreUsers.doc(id).get());
+    await firestoreRequest(firestoreWarehouses.doc(id).update(updatedData));
+    const warehouses = await firestoreRequest(firestoreWarehouses.doc(id).get());
 
-    const data = users.data();
-    delete data.password;
+    const data = warehouses.data();
 
     const bodyResponse = {
         code: 204,
@@ -69,13 +68,13 @@ const putUser = async (req: NowRequest, res: NowResponse) => {
 export default (req: NowRequest, res: NowResponse) => {
     switch (req.method) {
         case 'GET':
-            getUser(req, res);
+            getWarehouse(req, res);
             break;
         case 'DELETE':
-            deleteUser(req, res);
+            deleteWarehouse(req, res);
             break;
         case 'PUT':
-            putUser(req, res);
+            putWarehouse(req, res);
             break;
         default:
             res.status(405).json({ message: 'Method Not Allowed' });

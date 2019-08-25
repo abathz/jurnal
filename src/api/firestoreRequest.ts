@@ -1,62 +1,26 @@
 import _get from 'lodash/get';
 import to from 'await-to-js';
-import firebase from 'lib/firebase';
+import firestore from 'lib/firestore';
 
-const rejectResponse = (err: any) => console.error(`[Error]: ${err}`);
+export const USERS = 'users';
+export const WAREHOUSES = 'warehouses';
+export const REGIONS = 'regions';
+export const BRANCH_REGIONS = 'branchregion';
 
 const responseHandler = (firebaseRes: any) => {
     const [err, res] = firebaseRes;
     if (err) {
-        return rejectResponse(err);
+        console.error(`[Error]: ${err}`);
     } else {
         return res;
     }
 };
 
-export const firestoreGet = async (collection: string, doc?: string) => {
-    if (doc) {
-        return responseHandler(
-            await to(
-                firebase
-                    .collection(collection)
-                    .doc(doc)
-                    .get()
-            )
-        );
-    } else {
-        return responseHandler(await to(firebase.collection(collection).get()));
-    }
-};
+export const firestoreUsers = firestore.collection('users');
+export const firestoreWarehouses = firestore.collection('warehouses');
+export const firestoreRegions = firestore.collection('regions');
+export const firestoreBranchRegions = firestore.collection('branchregion');
 
-export const firestorePost = async (collection: string, data: any) => {
-    return responseHandler(
-        await to(
-            firebase
-                .collection(collection)
-                .doc()
-                .set(data)
-        )
-    );
-};
-
-export const firestorePut = async (collection: string, doc: string, data: any) => {
-    return responseHandler(
-        await to(
-            firebase
-                .collection(collection)
-                .doc(doc)
-                .update(data)
-        )
-    );
-};
-
-export const firestoreDelete = async (collection: string, doc: string) => {
-    return responseHandler(
-        await to(
-            firebase
-                .collection(collection)
-                .doc(doc)
-                .delete()
-        )
-    );
+export default async (request: any) => {
+    return responseHandler(await to(request));
 };

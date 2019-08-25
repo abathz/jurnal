@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse } from '@now/node';
 import { Base64 } from 'js-base64';
 import _get from 'lodash/get';
-import { firestoreGet } from 'api/firestoreRequest';
+import firestoreRequest, { firestoreUsers } from 'api/firestoreRequest';
 import { createToken } from 'lib/jwt';
 
 export default async (req: NowRequest, res: NowResponse) => {
@@ -10,10 +10,11 @@ export default async (req: NowRequest, res: NowResponse) => {
         ...body,
         password: Base64.encode(body.password)
     };
+    let bodyResponse;
 
     const token = createToken(data);
 
-    const users: any = await firestoreGet('users');
+    let users: any = await firestoreRequest(firestoreUsers.get());
 
     const isUserValid: boolean = users.docs
         .map((doc: any) => {
@@ -22,9 +23,26 @@ export default async (req: NowRequest, res: NowResponse) => {
         })
         .some((user: any) => user.email === data.email && user.password === data.password);
 
+    users = users.docs
+        .map((doc: any) => {
+            const user = doc.data();
+            return user;
+        })
+        .find((user: any) => user.email === data.email && user.password === data.password && delete user.password);
+
     if (isUserValid) {
-        res.status(200).json({ ...users, token });
+        bodyResponse = {
+            code: 200,
+            ok: true,
+            message: '',
+            data: {
+                token,
+                profile: users
+            }
+        };
+        res.status(bodyResponse.code).json(bodyResponse);
     } else {
-        res.status(404).json({ code: 404, ok: false, message: 'login failed', data: {} });
+        bodyResponse = { code: 404, ok: false, message: 'login failed', data: {} };
+        res.status(bodyResponse.code).json(bodyResponse);
     }
 };
