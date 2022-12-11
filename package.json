@@ -27,7 +27,7 @@
     "await-to-js": "^2.1.1",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "firebase": "^6.3.4",
     "immutability-helper": "^3.0.1",
     "js-base64": "^2.5.1",
